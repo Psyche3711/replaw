@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>已废止法规库 - 反洗钱反恐怖融资 | RepLawCN.com</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -20,11 +20,11 @@
         }
         
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, #001a33 0%, #003366 30%, #004080 60%, #0066cc 100%);
             color: white;
             padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
         
         header h1 {
@@ -49,6 +49,7 @@
             display: flex;
             gap: 30px;
             margin-top: 30px;
+            align-items: flex-start;
         }
         
         /* 侧边栏 */
@@ -61,16 +62,25 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
             overflow: hidden;
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
         }
         
+        /* 侧边栏头部 - 固定高度确保与图表标题对齐 */
         .sidebar-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #0066cc 100%);
             color: white;
-            padding: 15px 20px;
+            padding: 16px 20px;
             font-weight: 600;
             font-size: 1.1em;
+            line-height: 1.2;
+            flex-shrink: 0;
+        }
+        
+        .chart-container {
+            height: 420px;
         }
         
         .sidebar-content {
@@ -81,11 +91,13 @@
         .main-content {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
         }
         
         .stats-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 280px repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
             margin-top: 30px;
@@ -100,6 +112,35 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
+        /* 统计卡片中法规类型的蓝色系底纹 - 自下而上由深至浅 */
+        .stat-card:not(.stat-card-total):nth-child(2) {
+            background: linear-gradient(0deg, #c5d9f0 0%, #e8f0f8 40%, white 100%);
+            border-bottom: 4px solid #003366;
+        }
+        .stat-card:not(.stat-card-total):nth-child(3) {
+            background: linear-gradient(0deg, #d0e3f3 0%, #e8f0f8 50%, white 100%);
+            border-bottom: 4px solid #004080;
+        }
+        .stat-card:not(.stat-card-total):nth-child(4) {
+            background: linear-gradient(0deg, #daebf8 0%, #e8f0f8 60%, white 100%);
+            border-bottom: 4px solid #005599;
+        }
+        .stat-card:not(.stat-card-total):nth-child(5) {
+            background: linear-gradient(0deg, #e8f0f8 0%, white 50%, white 100%);
+            border-bottom: 4px solid #0066cc;
+        }
+        
+        /* 法规类型卡片可点击样式 */
+        .stat-card.clickable {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card.clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
         .stat-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
@@ -108,7 +149,7 @@
         .stat-number {
             font-size: 3em;
             font-weight: 700;
-            color: #667eea;
+            color: #0066cc;
             margin-bottom: 10px;
         }
         
@@ -118,7 +159,7 @@
             font-weight: 500;
         }
         .stat-card-total {
-            background: linear-gradient(135deg, #4b5bdc 0%, #5a3fa0 100%);
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
             color: white;
         }
 
@@ -131,23 +172,36 @@
         }
         .charts-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin: 40px 0;
         }
         
         .chart-container {
             background: white;
-            padding: 25px;
+            padding: 0 25px;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: 340px;
+            display: flex;
+            flex-direction: column;
         }
         
         .chart-title {
-            font-size: 1.5em;
+            font-size: 1.1em;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
+            color: #003366;
+            border-bottom: 2px solid #c5d9f0;
+            padding: 16px 0 12px 0;
+            flex-shrink: 0;
+        }
+        
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .filter-section {
@@ -194,8 +248,8 @@
         .filter-group select:focus,
         .filter-group input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            border-color: #0066cc;
+            box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
         }
         
         .button-group {
@@ -250,12 +304,12 @@
         }
         
         .btn-search {
-            background-color: #667eea;
+            background-color: #0066cc;
             color: white;
         }
         
         .btn-search:hover {
-            background-color: #5568d3;
+            background-color: #005599;
         }
         
         .btn-reset {
@@ -280,16 +334,28 @@
             font-weight: 600;
             margin-bottom: 20px;
             color: #333;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .result-count {
-            color: #667eea;
+            color: #0066cc;
             font-weight: 600;
             margin-bottom: 20px;
         }
         
+        .results-title .result-count {
+            margin-bottom: 0;
+            margin-left: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            color: #888;
+        }
+        
         .law-item {
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #0066cc;
             padding: 15px 20px;
             margin-bottom: 15px;
             background-color: #f9f9f9;
@@ -298,7 +364,7 @@
         }
         
         .law-item:hover {
-            background-color: #f0f2ff;
+            background-color: #f0f8ff;
         }
         
         .law-name {
@@ -338,27 +404,27 @@
         
         .badge-category {
             background-color: #e3f2fd;
-            color: #1976d2;
+            color: #003366;
         }
         
         .badge-category-law {
-            background-color: #f3e5f5;
-            color: #7b1fa2;
+            background-color: #e3f2fd;
+            color: #003366;
         }
 
         .badge-category-admin {
-            background-color: #fff3e0;
-            color: #e65100;
+            background-color: #e3f2fd;
+            color: #004080;
         }
 
         .badge-category-industry {
-            background-color: #e0f2f1;
-            color: #00695c;
+            background-color: #e3f2fd;
+            color: #005599;
         }
         
         .badge-year {
-            background-color: #f3e5f5;
-            color: #7b1fa2;
+            background-color: #e3f2fd;
+            color: #0066cc;
         }
         
         .no-results {
@@ -403,7 +469,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background-color: #667eea;
+            background-color: #0066cc;
             color: white;
             border: none;
             border-radius: 50%;
@@ -416,7 +482,7 @@
         }
         
         .scroll-to-top:hover {
-            background-color: #5568d3;
+            background-color: #005599;
         }
         
         .pagination {
@@ -436,9 +502,9 @@
         }
         
         .pagination button.active {
-            background-color: #667eea;
+            background-color: #0066cc;
             color: white;
-            border-color: #667eea;
+            border-color: #0066cc;
         }
         
         .pagination button:disabled {
@@ -447,8 +513,8 @@
         }
         
         .law-item.highlight {
-            border-left-color: #ff9800;
-            background-color: #fff8e1;
+            border-left-color: #0066cc;
+            background-color: #f0f8ff;
         }
         
         @media (max-width: 768px) {
@@ -481,32 +547,32 @@
 </head>
 <body>
     <header>
-        <h1>已废止法规库</h1>
-        <p>反洗钱反恐怖融资相关法规</p>
-        <p style="font-size: 0.9em; margin-top: 10px;">数据截至 2025年3月31日</p>
+        <h1>已废止法规备查</h1>
+        <p>反洗钱反恐怖融资</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">数据截至 2026年3月31日</p>
     </header>
     
     <div class="container">
         
         <!-- 统计概览 -->
-        <div class="stats-section">
-            <div class="stat-card stat-card-total">
+        <div class="stats-section" id="statsSection">
+            <div class="stat-card stat-card-total clickable" onclick="showAllLaws()">
                 <div class="stat-number" id="totalLaws">85</div>
                 <div class="stat-label">已废止法规总数</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card clickable" onclick="filterByCategory('法律/司法解释')">
                 <div class="stat-number" id="lawsCount1">4</div>
                 <div class="stat-label">法律/司法解释</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card clickable" onclick="filterByCategory('行政法规')">
                 <div class="stat-number" id="lawsCount2">5</div>
                 <div class="stat-label">行政法规</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card clickable" onclick="filterByCategory('部门规章/规范性文件')">
                 <div class="stat-number" id="lawsCount3">74</div>
                 <div class="stat-label">部门规章/规范性文件</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card clickable" onclick="filterByCategory('团体/行业规定')">
                 <div class="stat-number" id="lawsCount4">2</div>
                 <div class="stat-label">团体/行业规定</div>
             </div>
@@ -558,7 +624,7 @@
                             </div>
                             <div class="filter-group">
                                 <label for="keywordFilter">关键词搜索</label>
-                                <input type="text" id="keywordFilter" placeholder="例如：反洗钱...">
+                                <input type="text" id="keywordFilter" placeholder="例如：客户尽职调查...">
                             </div>
                         </div>
                         <div class="button-group">
@@ -575,19 +641,25 @@
                 <!-- 图表展示 -->
                 <div class="charts-section">
                     <div class="chart-container">
-                        <h2 class="chart-title">按法规类型分布</h2>
-                        <canvas id="typesChart" style="max-height: 300px;"></canvas>
+                        <h2 class="chart-title">按法规类型统计</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="typesChart"></canvas>
+                        </div>
                     </div>
                     <div class="chart-container">
-                        <h2 class="chart-title">按年份分布（2003-2026）</h2>
-                        <canvas id="yearsChart" style="max-height: 300px;"></canvas>
+                        <h2 class="chart-title">按废止年份统计</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="yearsChart"></canvas>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- 结果显示 -->
-                <div class="results-section">
-                    <h2 class="results-title">法规列表</h2>
-                    <div class="result-count" id="resultCount">显示全部 87 条法规</div>
+                <div class="results-section" id="resultsSection">
+                    <h2 class="results-title">
+                        废止法规
+                        <span class="result-count" id="resultCount">显示全部 87 条法规</span>
+                    </h2>
                     <div id="lawsList"></div>
                     <div class="pagination" id="pagination"></div>
                 </div>
@@ -626,7 +698,7 @@
             {"name":"中国人民银行关于进一步加强金融机构反洗钱工作的通知（银发〔2008〕391号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于印发〈金融机构洗钱和恐怖融资风险评估及客户分类管理指引〉的通知（银发〔2013〕2号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于加强开户管理及可疑交易报告后续控制措施的通知（银发〔2017〕117号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
-            {"name":"中国人民银行办公厅关于“三证合一”登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
+            {"name":"中国人民银行办公厅关于\"三证合一\"登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行办公厅 保监会办公厅关于投保人与被保险人、受益人关系确认有关事项的通知（银办发〔2016〕270号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260303","abolish_reason":"中国人民银行 国家金融监督管理总局公告〔2026〕第5号"},
             {"name":"商业银行合规风险管理指引（银监发〔2006〕76号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
             {"name":"保险公司合规管理办法（保监发〔2016〕116号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
@@ -708,54 +780,91 @@
         
         // 初始化图表
         function initCharts() {
-            // 按类型分布
+            // 按类型统计
             const typeCtx = document.getElementById('typesChart').getContext('2d');
             new Chart(typeCtx, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
                     labels: ['法律/司法解释', '行政法规', '部门规章/规范性文件', '团体/行业规定'],
                     datasets: [{
+                        label: '废止数量',
                         data: [4, 5, 74, 2],
                         backgroundColor: [
-                            '#667eea',
-                            '#764ba2',
-                            '#f093fb',
-                            '#4facfe'
+                            '#001a33',
+                            '#003366',
+                            '#005599',
+                            '#0066cc'
                         ],
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-            
-            // 按年份分布
-            const yearCtx = document.getElementById('yearsChart').getContext('2d');
-            new Chart(yearCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2014', '2012', '2010', '2009', '2007', '2005', '2003'],
-                    datasets: [{
-                        label: '废止数量',
-                        data: [11, 14, 12, 7, 14, 3, 1, 2, 2, 3, 1, 3, 1, 2, 3, 2, 1, 1],
-                        backgroundColor: '#667eea',
-                        borderColor: '#667eea',
+                        borderColor: [
+                            '#001a33',
+                            '#003366',
+                            '#005599',
+                            '#0066cc'
+                        ],
                         borderWidth: 1
                     }]
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true,
+                    maintainAspectRatio: true,
                     scales: {
                         x: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            grid: {
+                                display: true
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // 按废止年份统计
+            const yearCtx = document.getElementById('yearsChart').getContext('2d');
+            const yearLabels = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2014', '2012', '2010', '2009', '2007', '2005', '2003'];
+            const yearData = [11, 14, 12, 7, 14, 3, 1, 2, 2, 3, 1, 3, 1, 2, 3, 2, 1, 1];
+            // 使用和左边图表相同的蓝色渐变系
+            const blueColors = ['#001a33', '#003366', '#005599', '#0066cc'];
+            const yearColors = yearLabels.map((_, index) => blueColors[index % blueColors.length]);
+            const yearBorders = yearLabels.map((_, index) => blueColors[index % blueColors.length]);
+            
+            new Chart(yearCtx, {
+                type: 'bar',
+                data: {
+                    labels: yearLabels,
+                    datasets: [{
+                        label: '废止数量',
+                        data: yearData,
+                        backgroundColor: yearColors,
+                        borderColor: yearBorders,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
                         }
                     },
                     plugins: {
@@ -816,20 +925,22 @@
             
             document.getElementById('resultCount').textContent = `显示 ${start + 1}-${Math.min(end, laws.length)} 条 / 共 ${laws.length} 条法规`;
             
-            // 分页按钮
+            // 分页按钮（当每页记录数 ≤5 时不显示数字分页）
             let paginationHTML = '';
-            if (currentPage > 1) {
-                paginationHTML += `<button onclick="goToPage(${currentPage - 1})">上一页</button>`;
-            }
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === currentPage) {
-                    paginationHTML += `<button class="active">${i}</button>`;
-                } else {
-                    paginationHTML += `<button onclick="goToPage(${i})">${i}</button>`;
+            if (laws.length > 5) {
+                if (currentPage > 1) {
+                    paginationHTML += `<button onclick="goToPage(${currentPage - 1})">上一页</button>`;
                 }
-            }
-            if (currentPage < totalPages) {
-                paginationHTML += `<button onclick="goToPage(${currentPage + 1})">下一页</button>`;
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === currentPage) {
+                        paginationHTML += `<button class="active">${i}</button>`;
+                    } else {
+                        paginationHTML += `<button onclick="goToPage(${i})">${i}</button>`;
+                    }
+                }
+                if (currentPage < totalPages) {
+                    paginationHTML += `<button onclick="goToPage(${currentPage + 1})">下一页</button>`;
+                }
             }
             document.getElementById('pagination').innerHTML = paginationHTML;
         }
@@ -845,6 +956,53 @@
             currentPage = page;
             displayLaws(filteredLaws);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 显示全部法规（通过点击总数卡片触发）
+        function showAllLaws() {
+            // 重置所有筛选条件
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('keywordFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            
+            currentPage = 1;
+            filteredLaws = [...allLawsData];
+            
+            displayLaws(filteredLaws);
+            
+            // 滚动到结果列表区域
+            setTimeout(function() {
+                const resultsSection = document.getElementById('resultsSection');
+                if (resultsSection) {
+                    const top = resultsSection.getBoundingClientRect().top + window.pageYOffset - 20;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+            }, 100);
+        }
+        
+        // 按法规类型筛选（通过点击卡片触发）
+        function filterByCategory(category) {
+            // 清空其他筛选条件，只按类型筛选
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('keywordFilter').value = '';
+            document.getElementById('typeFilter').value = category;
+            
+            currentPage = 1;
+            filteredLaws = allLawsData.filter(law => {
+                return law.category === category;
+            });
+            
+            // 先显示列表
+            displayLaws(filteredLaws);
+            
+            // 延迟滚动，确保列表先渲染
+            setTimeout(function() {
+                const resultsSection = document.getElementById('resultsSection');
+                if (resultsSection) {
+                    const top = resultsSection.getBoundingClientRect().top + window.pageYOffset - 20;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+            }, 100);
         }
         
         // 筛选法规
@@ -903,8 +1061,27 @@
         
         // 页面加载完成
         document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-            displayLaws(filteredLaws);
+            console.log('Page loaded, initializing...');
+            
+            // 首先显示列表（不依赖图表）
+            if (typeof displayLaws === 'function') {
+                displayLaws(filteredLaws);
+                console.log('Laws list displayed');
+            } else {
+                console.error('displayLaws function not found');
+            }
+            
+            // 然后尝试初始化图表
+            if (typeof Chart !== 'undefined' && typeof initCharts === 'function') {
+                try {
+                    initCharts();
+                    console.log('Charts initialized');
+                } catch(e) {
+                    console.error('Charts init error:', e);
+                }
+            } else {
+                console.log('Chart.js not loaded, skipping charts');
+            }
         });
     </script>
 </body>
