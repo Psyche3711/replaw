@@ -690,7 +690,8 @@
                     </div>
                     ` : ''}
                 </div>
-            `}.join('');
+                `;
+            }).join('');
             
             document.getElementById('resultCount').textContent = `显示 ${start + 1}-${Math.min(end, laws.length)} 条 / 共 ${laws.length} 条法规`;
             
