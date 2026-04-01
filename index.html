@@ -78,18 +78,7 @@
             color: #666;
             font-weight: 500;
         }
-        .stat-card-total {
-            background: linear-gradient(135deg, #4b5bdc 0%, #5a3fa0 100%);
-            color: white;
-        }
-
-        .stat-card-total .stat-number {
-           color: white;
-        }
-
-        .stat-card-total .stat-label {
-           color: rgba(255, 255, 255, 0.9);
-        }
+        
         .charts-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -399,10 +388,13 @@
     </header>
     
     <div class="container">
+        <div class="domain-notice">
+            <strong>℃ RepLawCN.com</strong> - 法律知识库 | 已废止法规数据库
+        </div>
         
         <!-- 统计概览 -->
         <div class="stats-section">
-            <div class="stat-card stat-card-total">
+            <div class="stat-card">
                 <div class="stat-number" id="totalLaws">83</div>
                 <div class="stat-label">已废止法规总数</div>
             </div>
@@ -424,7 +416,7 @@
         <div class="charts-section">
             <div class="chart-container">
                 <h2 class="chart-title">按法规类型分布</h2>
-                <canvas id="typesChart" style="max-height: 300px;"></canvas>
+                <canvas id="typesChart"></canvas>
             </div>
             <div class="chart-container">
                 <h2 class="chart-title">按年份分布（2003-2026）</h2>
@@ -520,7 +512,7 @@
             {"name":"中国人民银行关于进一步加强金融机构反洗钱工作的通知（银发〔2008〕391号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于印发〈金融机构洗钱和恐怖融资风险评估及客户分类管理指引〉的通知（银发〔2013〕2号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于加强开户管理及可疑交易报告后续控制措施的通知（银发〔2017〕117号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
-            {"name":"中国人民银行办公厅关于“三证合一”登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
+            {"name":"中国人民银行办公厅关于"三证合一"登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行办公厅 保监会办公厅关于投保人与被保险人、受益人关系确认有关事项的通知（银办发〔2016〕270号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260303","abolish_reason":"中国人民银行 国家金融监督管理总局公告〔2026〕第5号"},
             {"name":"商业银行合规风险管理指引（银监发〔2006〕76号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
             {"name":"保险公司合规管理办法（保监发〔2016〕116号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
@@ -701,8 +693,7 @@
                     </div>
                     ` : ''}
                 </div>
-                `;
-            }).join('');
+            `}.join('');
             
             document.getElementById('resultCount').textContent = `显示 ${start + 1}-${Math.min(end, laws.length)} 条 / 共 ${laws.length} 条法规`;
             
