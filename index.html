@@ -78,7 +78,18 @@
             color: #666;
             font-weight: 500;
         }
-        
+        .stat-card-total {
+            background: linear-gradient(135deg, #4b5bdc 0%, #5a3fa0 100%);
+            color: white;
+        }
+
+        .stat-card-total .stat-number {
+           color: white;
+        }
+
+        .stat-card-total .stat-label {
+           color: rgba(255, 255, 255, 0.9);
+        }
         .charts-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -260,10 +271,15 @@
             background-color: #f3e5f5;
             color: #7b1fa2;
         }
-        
+
         .badge-category-admin {
             background-color: #fff3e0;
             color: #e65100;
+        }
+
+        .badge-category-industry {
+            background-color: #e0f2f1;
+            color: #00695c;
         }
         
         .badge-year {
@@ -388,14 +404,11 @@
     </header>
     
     <div class="container">
-        <div class="domain-notice">
-            <strong>℃ RepLawCN.com</strong> - 法律知识库 | 已废止法规数据库
-        </div>
         
         <!-- 统计概览 -->
         <div class="stats-section">
-            <div class="stat-card">
-                <div class="stat-number" id="totalLaws">83</div>
+            <div class="stat-card stat-card-total">
+                <div class="stat-number" id="totalLaws">85</div>
                 <div class="stat-label">已废止法规总数</div>
             </div>
             <div class="stat-card">
@@ -410,13 +423,17 @@
                 <div class="stat-number" id="lawsCount3">74</div>
                 <div class="stat-label">部门规章/规范性文件</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-number" id="lawsCount4">2</div>
+                <div class="stat-label">团体/行业规定</div>
+            </div>
         </div>
         
         <!-- 图表展示 -->
         <div class="charts-section">
             <div class="chart-container">
                 <h2 class="chart-title">按法规类型分布</h2>
-                <canvas id="typesChart"></canvas>
+                <canvas id="typesChart" style="max-height: 300px;"></canvas>
             </div>
             <div class="chart-container">
                 <h2 class="chart-title">按年份分布（2003-2026）</h2>
@@ -459,6 +476,7 @@
                         <option value="法律/司法解释">法律/司法解释</option>
                         <option value="行政法规">行政法规</option>
                         <option value="部门规章/规范性文件">部门规章/规范性文件</option>
+                        <option value="团体/行业规定">团体/行业规定</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -512,7 +530,7 @@
             {"name":"中国人民银行关于进一步加强金融机构反洗钱工作的通知（银发〔2008〕391号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于印发〈金融机构洗钱和恐怖融资风险评估及客户分类管理指引〉的通知（银发〔2013〕2号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行关于加强开户管理及可疑交易报告后续控制措施的通知（银发〔2017〕117号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
-            {"name":"中国人民银行办公厅关于"三证合一"登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
+            {"name":"中国人民银行办公厅关于“三证合一”登记制度改革有关反洗钱工作管理事项的通知（银办发〔2016〕110号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260227","abolish_reason":"中国人民银行公告〔2026〕第3号"},
             {"name":"中国人民银行办公厅 保监会办公厅关于投保人与被保险人、受益人关系确认有关事项的通知（银办发〔2016〕270号）","category":"部门规章/规范性文件","year":2026,"abolish_date":"20260303","abolish_reason":"中国人民银行 国家金融监督管理总局公告〔2026〕第5号"},
             {"name":"商业银行合规风险管理指引（银监发〔2006〕76号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
             {"name":"保险公司合规管理办法（保监发〔2016〕116号）","category":"部门规章/规范性文件","year":2025,"abolish_date":"20250301","abolish_reason":"金融机构合规管理办法（国家金融监督管理总局令2024年第7号）"},
@@ -576,7 +594,9 @@
             {"name":"《人民币大额和可疑支付交易报告管理办法》（中国人民银行令〔2003〕第2号）和《金融机构大额和可疑外汇资金交易报告管理办法》（中国人民银行令〔2003〕第3号）","category":"部门规章/规范性文件","year":2007,"abolish_date":"20070301","abolish_reason":"金融机构大额交易和可疑交易报告管理办法（中国人民银行令〔2006〕第2号，该法规也已失效）"},
             {"name":"大额和可疑支付交易报告接收及调查操作程序（银办发〔2004〕180号）","category":"部门规章/规范性文件","year":2007,"abolish_date":"20070521","abolish_reason":"关于印发《中国人民银行反洗钱调查实施细则(试行)》的通知（银发〔2007〕158号）"},
             {"name":"中国人民银行办公厅关于进一步规范大额交易和可疑交易报告纠错删除操作规程的通知（银办发〔2014〕104号）","category":"部门规章/规范性文件","year":2005,"abolish_date":"20050321","abolish_reason":"中国人民银行公告〔2025〕第3号"},
-            {"name":"银行账户管理办法（银发〔1994〕255号）","category":"部门规章/规范性文件","year":2003,"abolish_date":"20030901","abolish_reason":"人民币银行结算账户管理办法（中国人民银行令〔2003〕第5号）"}
+            {"name":"银行账户管理办法（银发〔1994〕255号）","category":"部门规章/规范性文件","year":2003,"abolish_date":"20030901","abolish_reason":"人民币银行结算账户管理办法（中国人民银行令〔2003〕第5号）"},
+            {"name":"证券公司反洗钱客户风险等级划分标准指引(试行)（中证协发〔2009〕110号）","category":"团体/行业规定","year":2014,"abolish_date":"20140428","abolish_reason":"中国证券业协会关于发布《证券公司反洗钱工作指引》的通知(中证协发〔2014〕72号)"},
+            {"name":"中国证券业协会《会员反洗钱工作指引》","category":"团体/行业规定","year":2014,"abolish_date":"20140428","abolish_reason":"中国证券业协会关于发布《证券公司反洗钱工作指引》的通知(中证协发〔2014〕72号)"}
         ];
         
         let currentPage = 1;
@@ -597,13 +617,14 @@
             new Chart(typeCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['法律/司法解释', '行政法规', '部门规章/规范性文件'],
+                    labels: ['法律/司法解释', '行政法规', '部门规章/规范性文件', '团体/行业规定'],
                     datasets: [{
-                        data: [4, 5, 74],
+                        data: [4, 5, 74, 2],
                         backgroundColor: [
                             '#667eea',
                             '#764ba2',
-                            '#f093fb'
+                            '#f093fb',
+                            '#4facfe'
                         ],
                         borderColor: '#fff',
                         borderWidth: 2
@@ -666,8 +687,9 @@
             }
             
             lawsList.innerHTML = pageItems.map(law => {
-                const categoryClass = law.category === '法律/司法解释' ? 'badge-category-law' : 
-                                     law.category === '行政法规' ? 'badge-category-admin' : 'badge-category';
+                const categoryClass = law.category === '法律/司法解释' ? 'badge-category-law' :
+                                     law.category === '行政法规' ? 'badge-category-admin' :
+                                     law.category === '团体/行业规定' ? 'badge-category-industry' : 'badge-category';
                 return `
                 <div class="law-item">
                     <div class="law-name">${law.name}</div>
@@ -693,7 +715,8 @@
                     </div>
                     ` : ''}
                 </div>
-            `}.join('');
+                `;
+            }).join('');
             
             document.getElementById('resultCount').textContent = `显示 ${start + 1}-${Math.min(end, laws.length)} 条 / 共 ${laws.length} 条法规`;
             
