@@ -44,6 +44,45 @@
             padding: 20px;
         }
         
+        /* 左侧边栏布局 */
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .sidebar-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        .sidebar-content {
+            padding: 20px;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
         .stats-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -163,6 +202,41 @@
             display: flex;
             gap: 10px;
             margin-top: 20px;
+        }
+        
+        /* 侧边栏筛选器样式 */
+        .sidebar-filter .filter-row {
+            display: block;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-filter .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-filter .filter-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sidebar-filter .filter-group label {
+            font-size: 0.9em;
+        }
+        
+        .sidebar-filter .filter-group select,
+        .sidebar-filter .filter-group input {
+            width: 100%;
+            padding: 8px 10px;
+        }
+        
+        .sidebar-filter .button-group {
+            margin-top: 15px;
+        }
+        
+        .sidebar-filter .button-group button {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 0.95em;
         }
         
         button {
@@ -393,6 +467,15 @@
             .stats-section {
                 grid-template-columns: 1fr;
             }
+            
+            /* 移动端侧边栏布局 */
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -429,73 +512,86 @@
             </div>
         </div>
         
-        <!-- 图表展示 -->
-        <div class="charts-section">
-            <div class="chart-container">
-                <h2 class="chart-title">按法规类型分布</h2>
-                <canvas id="typesChart" style="max-height: 300px;"></canvas>
-            </div>
-            <div class="chart-container">
-                <h2 class="chart-title">按年份分布（2003-2026）</h2>
-                <canvas id="yearsChart" style="max-height: 300px;"></canvas>
-            </div>
-        </div>
-        
-        <!-- 筛选器 -->
-        <div class="filter-section">
-            <h2 class="filter-title">筛选已废止法规</h2>
-            <div class="filter-row">
-                <div class="filter-group">
-                    <label for="yearFilter">废止年份</label>
-                    <select id="yearFilter">
-                        <option value="">-- 全部年份 --</option>
-                        <option value="2026">2026年</option>
-                        <option value="2025">2025年</option>
-                        <option value="2024">2024年</option>
-                        <option value="2023">2023年</option>
-                        <option value="2022">2022年</option>
-                        <option value="2021">2021年</option>
-                        <option value="2020">2020年</option>
-                        <option value="2019">2019年</option>
-                        <option value="2018">2018年</option>
-                        <option value="2017">2017年</option>
-                        <option value="2016">2016年</option>
-                        <option value="2014">2014年</option>
-                        <option value="2012">2012年</option>
-                        <option value="2010">2010年</option>
-                        <option value="2009">2009年</option>
-                        <option value="2007">2007年</option>
-                        <option value="2005">2005年</option>
-                        <option value="2003">2003年</option>
-                    </select>
+        <!-- 左侧边栏 + 主内容区域 -->
+        <div class="main-layout">
+            
+            <!-- 左侧边栏 -->
+            <aside class="sidebar">
+                <!-- 筛选器 -->
+                <div class="sidebar-section">
+                    <div class="sidebar-header">筛选已废止法规</div>
+                    <div class="sidebar-content sidebar-filter">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label for="yearFilter">废止年份</label>
+                                <select id="yearFilter">
+                                    <option value="">-- 全部年份 --</option>
+                                    <option value="2026">2026年</option>
+                                    <option value="2025">2025年</option>
+                                    <option value="2024">2024年</option>
+                                    <option value="2023">2023年</option>
+                                    <option value="2022">2022年</option>
+                                    <option value="2021">2021年</option>
+                                    <option value="2020">2020年</option>
+                                    <option value="2019">2019年</option>
+                                    <option value="2018">2018年</option>
+                                    <option value="2017">2017年</option>
+                                    <option value="2016">2016年</option>
+                                    <option value="2014">2014年</option>
+                                    <option value="2012">2012年</option>
+                                    <option value="2010">2010年</option>
+                                    <option value="2009">2009年</option>
+                                    <option value="2007">2007年</option>
+                                    <option value="2005">2005年</option>
+                                    <option value="2003">2003年</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="typeFilter">法规类型</label>
+                                <select id="typeFilter">
+                                    <option value="">-- 全部类型 --</option>
+                                    <option value="法律/司法解释">法律/司法解释</option>
+                                    <option value="行政法规">行政法规</option>
+                                    <option value="部门规章/规范性文件">部门规章/规范性文件</option>
+                                    <option value="团体/行业规定">团体/行业规定</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="keywordFilter">关键词搜索</label>
+                                <input type="text" id="keywordFilter" placeholder="例如：反洗钱...">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-search" onclick="filterLaws()">搜索</button>
+                            <button class="btn-reset" onclick="resetFilter()">重置</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="filter-group">
-                    <label for="typeFilter">法规类型</label>
-                    <select id="typeFilter">
-                        <option value="">-- 全部类型 --</option>
-                        <option value="法律/司法解释">法律/司法解释</option>
-                        <option value="行政法规">行政法规</option>
-                        <option value="部门规章/规范性文件">部门规章/规范性文件</option>
-                        <option value="团体/行业规定">团体/行业规定</option>
-                    </select>
+            </aside>
+            
+            <!-- 主内容区域 -->
+            <main class="main-content">
+                
+                <!-- 图表展示 -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h2 class="chart-title">按法规类型分布</h2>
+                        <canvas id="typesChart" style="max-height: 300px;"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h2 class="chart-title">按年份分布（2003-2026）</h2>
+                        <canvas id="yearsChart" style="max-height: 300px;"></canvas>
+                    </div>
                 </div>
-                <div class="filter-group">
-                    <label for="keywordFilter">关键词搜索</label>
-                    <input type="text" id="keywordFilter" placeholder="例如：反洗钱、客户尽职调查...">
+                
+                <!-- 结果显示 -->
+                <div class="results-section">
+                    <h2 class="results-title">法规列表</h2>
+                    <div class="result-count" id="resultCount">显示全部 87 条法规</div>
+                    <div id="lawsList"></div>
+                    <div class="pagination" id="pagination"></div>
                 </div>
-            </div>
-            <div class="button-group">
-                <button class="btn-search" onclick="filterLaws()">搜索</button>
-                <button class="btn-reset" onclick="resetFilter()">重置</button>
-            </div>
-        </div>
-        
-        <!-- 结果显示 -->
-        <div class="results-section">
-            <h2 class="results-title">法规列表</h2>
-            <div class="result-count" id="resultCount">显示全部 83 条法规</div>
-            <div id="lawsList"></div>
-            <div class="pagination" id="pagination"></div>
+            </main>
         </div>
     </div>
     
