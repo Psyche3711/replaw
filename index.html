@@ -985,7 +985,14 @@
         function goToPage(page) {
             currentPage = page;
             displayLaws(filteredLaws);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 滚动到结果区域，而非页面顶部，改善移动端体验
+            setTimeout(function() {
+                const resultsSection = document.getElementById('resultsSection');
+                if (resultsSection) {
+                    const top = resultsSection.getBoundingClientRect().top + window.pageYOffset - 20;
+                    window.scrollTo({ top: top, behavior: 'smooth' });
+                }
+            }, 50);
         }
         
         // 显示全部法规（通过点击总数卡片触发）
