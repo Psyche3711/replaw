@@ -37,6 +37,30 @@
             font-size: 1.1em;
             opacity: 0.9;
         }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 10px 22px;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: 1.5px solid rgba(255,255,255,0.55);
+            border-radius: 24px;
+            font-size: 0.95em;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .download-btn:hover {
+            background: rgba(255,255,255,0.28);
+            border-color: #fff;
+        }
+        .download-btn svg {
+            flex-shrink: 0;
+        }
         
         .container {
             max-width: 1400px;
@@ -549,6 +573,14 @@
     <header>
         <h1>已废止法规备查</h1>
         <p style="font-size: 0.9em; margin-top: 10px;">数据截至 2026年3月31日</p>
+        <a class="download-btn" href="repealed-regulations-aml-20260331.pdf" download="已废止法规：反洗钱反恐怖融资（截至20260331）.pdf">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            下载完整PDF
+        </a>
     </header>
     
     <div class="container">
